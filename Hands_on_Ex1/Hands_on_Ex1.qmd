@@ -115,7 +115,7 @@ st_crs(mpsz)
 
 However, we notice that although `mpsz` data frame is projected in svy21, the print result indicates that the EPSG is 9001. This is a wrong EPSG code because the correct EPSG code for svy21 should be [3414](https://epsg.io/3414). In order to assign the correct EPSG code to `mpsz` data frame, *st_set_crs()* of **sf** package is used as shown in the code chunk below.
 
-```{r}
+```{r, warning=FALSE}
 mpsz3414 <- st_set_crs(mpsz, 3414)
 ```
 
@@ -148,7 +148,7 @@ Aspatial data os data that is not a geospatial data but among the data fields, t
 
 The output of using [*read_csv()*](https://readr.tidyverse.org/reference/read_delim.html) of **readr** package to import `listing.csv` would be a [tibble data frame](https://r4ds.had.co.nz/tibbles.html). Note that the `latitude` and `longitude` fields are in decimal degree format.\
 
-```{r}
+```{r, message=FALSE}
 listings <- read_csv("data/aspatial/listings.csv")
 ```
 
@@ -172,7 +172,7 @@ Here are the explanation for the arguments:
 
 -   *coords* argument requires you to provide the column name of the x-coordinates first then followed by the column name of the y-coordinates.
 
--   *crs* argument requires you to provide the coordinates system in epsg format. [EPSG: 4326](https://epsg.io/4326) is wgs84 Geographic Coordinate System and [EPSG: 3414](https://epsg.io/3414) is Singapore SVY21 Projected Coordinate System. You can search for other country\'s epsg code by referring to [epsg.io](https://epsg.io/).
+-   *crs* argument requires you to provide the coordinates system in epsg format. [EPSG: 4326](https://epsg.io/4326) is wgs84 Geographic Coordinate System and [EPSG: 3414](https://epsg.io/3414) is Singapore SVY21 Projected Coordinate System. You can search for other country's epsg code by referring to [epsg.io](https://epsg.io/).
 
 -   *%\>%* is used to nest *st_transform()* to transform the newly created simple feature data frame into svy21 projected coordinates system.
 

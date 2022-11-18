@@ -47,7 +47,7 @@ mpsz
 
 Next, we will import *respopagsex2000to2018.csv* file into RStudio and save the file into an R dataframe called *popagsex* using *read_csv()* function of **readr** package as shown in the code chunk below.
 
-```{r}
+```{r, message=FALSE}
 popdata <- read_csv("data/aspatial/respopagesextod2011to2020.csv")
 ```
 
@@ -98,7 +98,7 @@ mutate(`DEPENDENCY` = (`YOUNG` + `AGED`)
 
 Before we can perform the georelational join, one extra step is required to convert the values in PA and SZ fields to uppercase. This is because the values of PA and SZ fields are made up of upper- and lowercase. On the other, hand the SUBZONE_N and PLN_AREA_N are in uppercase.
 
-```{r}
+```{r, warning=FALSE}
 popdata2020 <- popdata2020 %>%
   mutate_at(.vars = vars(PA, SZ), 
           .funs = funs(toupper)) %>%
@@ -125,7 +125,7 @@ Two approaches can be used to prepare thematic map using *tmap*, they are:
 
 *qtm()* is concise and provides a good default visualisation in many cases.
 
-The code chunk below will draw a cartographic standard choropleth map as shown below. *tmap_mode()* with \"plot\" option is used to produce a static map. For interactive mode, \"view\" option should be used. *fill* argument is used to map the attribute (i.e. DEPENDENCY)
+The code chunk below will draw a cartographic standard choropleth map as shown below. *tmap_mode()* with "plot" option is used to produce a static map. For interactive mode, "view" option should be used. *fill* argument is used to map the attribute (i.e. DEPENDENCY)
 
 ```{r}
 tmap_mode("plot")
@@ -135,9 +135,9 @@ qtm(mpsz_pop2020,
 
 However, the aesthetics of individual layers using *qtm() is* harder to control.
 
-### Creating a choropleth map by using *tmap*\'s elements
+### Creating a choropleth map by using *tmap*'s elements
 
-To draw a high quality cartographic choropleth map as shown in the figure below, **tmap**\'s drawing elements should be used.
+To draw a high quality cartographic choropleth map as shown in the figure below, **tmap**'s drawing elements should be used.
 
 ```{r}
 tm_shape(mpsz_pop2020)+
@@ -170,11 +170,11 @@ tm_shape(mpsz_pop2020) +
   tm_polygons()
 ```
 
-####  Drawing a choropleth map using *tm_polygons()*
+#### Drawing a choropleth map using *tm_polygons()*
 
 To draw a choropleth map showing the geographical distribution of a selected variable by planning subzone, we need to assign the target variable such as *Dependency* to *tm_polygons()*.
 
-The default interval binning used to draw the choropleth map is called \"pretty\". The default colour scheme used is `YlOrRd` of ColorBrewer. By default, missing value will be shaded in grey.
+The default interval binning used to draw the choropleth map is called "pretty". The default colour scheme used is `YlOrRd` of ColorBrewer. By default, missing value will be shaded in grey.
 
 ```{r}
 tm_shape(mpsz_pop2020)+
@@ -198,7 +198,7 @@ To add the boundary of the planning subzones, tm_borders will be used as shown i
 
 -   *lwd* = border line width. The default is 1, and
 
--   *lty* = border line type. The default is \"solid\".
+-   *lty* = border line type. The default is "solid".
 
 ```{r}
 tm_shape(mpsz_pop2020)+
@@ -250,7 +250,7 @@ summary(mpsz_pop2020$DEPENDENCY)
 
 Now, we will plot the choropleth map by using the code chunk below to specify break points as well as maximum and minimum.
 
-```{r}
+```{r,warning=FALSE}
 tm_shape(mpsz_pop2020)+
   tm_fill("DEPENDENCY",
           breaks = c(0, 0.60, 0.70, 0.80, 0.90, 1.00)) +
@@ -274,7 +274,7 @@ tm_shape(mpsz_pop2020)+
   tm_borders(alpha = 0.5)
 ```
 
-To reverse the colour shading, add a \"-\" prefix.
+To reverse the colour shading, add a "-" prefix.
 
 ```{r}
 tm_shape(mpsz_pop2020)+
@@ -393,7 +393,7 @@ tm_shape(mpsz_pop2020)+
 
 In this example, multiple small choropleth maps are created by using **tm_facets()**.
 
-```{r}
+```{r,warning=FALSE}
 tm_shape(mpsz_pop2020) +
   tm_fill("DEPENDENCY",
           style = "quantile",
@@ -431,7 +431,7 @@ tmap_arrange(youngmap, agedmap, asp=1, ncol=2)
 
 Instead of creating small multiple choropleth map, you can also use **selection** funtion to map spatial objects meeting the *selection criterion*, in this case, the central region.
 
-```{r}
+```{r, warning=FALSE}
 tm_shape(mpsz_pop2020[mpsz_pop2020$REGION_N=="CENTRAL REGION", ])+
   tm_fill("DEPENDENCY", 
           style = "quantile", 
@@ -447,4 +447,4 @@ tm_shape(mpsz_pop2020[mpsz_pop2020$REGION_N=="CENTRAL REGION", ])+
   tm_borders(alpha = 0.5)
 ```
 
-###   
+### 
