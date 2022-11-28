@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>ISSS624 - Hands_on_Ex5</title>
+<title>ISSS624 - In_class_Ex2</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -165,8 +165,26 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
-  <li><a href="#getting-started" id="toc-getting-started" class="nav-link" data-scroll-target="#getting-started">Getting Started</a></li>
+  <li><a href="#getting-started" id="toc-getting-started" class="nav-link active" data-scroll-target="#getting-started">Getting Started</a></li>
+  <li><a href="#importing-geospatial-data" id="toc-importing-geospatial-data" class="nav-link" data-scroll-target="#importing-geospatial-data">Importing Geospatial Data</a>
+  <ul class="collapse">
+  <li><a href="#importing-water-point-geospatial-data" id="toc-importing-water-point-geospatial-data" class="nav-link" data-scroll-target="#importing-water-point-geospatial-data">Importing water point geospatial data</a></li>
+  <li><a href="#importing-nigeria-lga-boundary-data" id="toc-importing-nigeria-lga-boundary-data" class="nav-link" data-scroll-target="#importing-nigeria-lga-boundary-data">Importing Nigeria LGA boundary data</a></li>
+  </ul></li>
+  <li><a href="#data-wrangling" id="toc-data-wrangling" class="nav-link" data-scroll-target="#data-wrangling">Data Wrangling</a>
+  <ul class="collapse">
+  <li><a href="#recoding-na-values-into-string" id="toc-recoding-na-values-into-string" class="nav-link" data-scroll-target="#recoding-na-values-into-string">Recoding NA values into string</a></li>
+  <li><a href="#eda" id="toc-eda" class="nav-link" data-scroll-target="#eda">EDA</a></li>
+  </ul></li>
+  <li><a href="#extracting-water-point-data" id="toc-extracting-water-point-data" class="nav-link" data-scroll-target="#extracting-water-point-data">Extracting Water Point Data</a>
+  <ul class="collapse">
+  <li><a href="#extracting-funtional-water-point" id="toc-extracting-funtional-water-point" class="nav-link" data-scroll-target="#extracting-funtional-water-point">Extracting funtional water point</a></li>
+  <li><a href="#extracting-non-funtional-water-point" id="toc-extracting-non-funtional-water-point" class="nav-link" data-scroll-target="#extracting-non-funtional-water-point">Extracting non-funtional water point</a></li>
+  <li><a href="#extracting-water-point-with-unknown-class" id="toc-extracting-water-point-with-unknown-class" class="nav-link" data-scroll-target="#extracting-water-point-with-unknown-class">Extracting water point with Unknown class</a></li>
+  </ul></li>
+  <li><a href="#performing-point-in-polygon-count" id="toc-performing-point-in-polygon-count" class="nav-link" data-scroll-target="#performing-point-in-polygon-count">Performing Point-in-Polygon Count</a></li>
+  <li><a href="#saving-the-analytical-data-table" id="toc-saving-the-analytical-data-table" class="nav-link" data-scroll-target="#saving-the-analytical-data-table">Saving the Analytical Data Table</a></li>
+  <li><a href="#visualising-the-spatial-distribution-of-water-points" id="toc-visualising-the-spatial-distribution-of-water-points" class="nav-link" data-scroll-target="#visualising-the-spatial-distribution-of-water-points">Visualising the spatial distribution of water points</a></li>
   </ul>
 </nav>
     </div>
@@ -175,7 +193,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Hands_on_Ex5</h1>
+<h1 class="title">In_class_Ex2</h1>
 </div>
 
 
@@ -189,13 +207,124 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<section id="overview" class="level2">
-<h2 class="anchored" data-anchor-id="overview">Overview</h2>
-<p>This is the overview paragraph.</p>
-</section>
 <section id="getting-started" class="level2">
 <h2 class="anchored" data-anchor-id="getting-started">Getting Started</h2>
-<p>This is the getting started paragraph.</p>
+<p>In the code chunk below, <code>p_load()</code> of <em>pacman</em> package is used to install and load the following R packages into R environment:</p>
+<ul>
+<li><p>sf:</p></li>
+<li><p>tidyverse:</p></li>
+<li><p>tmap:</p></li>
+<li><p>spdep:</p></li>
+<li><p>funModeling will be used for rapid Exploratory Data Analysis</p></li>
+</ul>
+<div class="cell">
+
+</div>
+</section>
+<section id="importing-geospatial-data" class="level2">
+<h2 class="anchored" data-anchor-id="importing-geospatial-data">Importing Geospatial Data</h2>
+<p>In this take-home exericse, two data sets will be used, they are:</p>
+<ul>
+<li>geo_export</li>
+<li>geoBoundaries-NGA-ADM2</li>
+</ul>
+<section id="importing-water-point-geospatial-data" class="level3">
+<h3 class="anchored" data-anchor-id="importing-water-point-geospatial-data">Importing water point geospatial data</h3>
+<p>The code below imports the water point data (i.e.&nbsp;Water_Point_Data_Exchange.csv) as a <a href="https://r4ds.had.co.nz/tibbles.html">tibble data frame</a></p>
+<div class="cell">
+
+</div>
+<p>The code chunk below converts the data frame into a simple feature data frame by using <a href="https://r-spatial.github.io/sf/reference/st_as_sf.html"><em>st_as_sf()</em></a> of <strong>sf</strong> packages. Then<code>filter()</code> of dplyr package is used to extract water point records of Nigeria.</p>
+<div class="cell">
+
+</div>
+<p>Next, <code>write_rds()</code> of readr package is used to save the extracted sf data table (i.e.&nbsp;wp) into an output file in rds data format. The output file is called <em>wp_nga.rds</em> and it is saved in <em>geodata</em> sub-folder.</p>
+<div class="cell">
+
+</div>
+</section>
+<section id="importing-nigeria-lga-boundary-data" class="level3">
+<h3 class="anchored" data-anchor-id="importing-nigeria-lga-boundary-data">Importing Nigeria LGA boundary data</h3>
+<p>The code chunk below imports the LGA boundary data into R environment by using <code>st_read()</code> of <strong>sf</strong> package to import <em>geoBoundaries-NGA-ADM2</em> shapefile into R environment and save the imported geospatial data into simple feature data table.</p>
+<div class="cell">
+
+</div>
+</section>
+</section>
+<section id="data-wrangling" class="level2">
+<h2 class="anchored" data-anchor-id="data-wrangling">Data Wrangling</h2>
+<section id="recoding-na-values-into-string" class="level3">
+<h3 class="anchored" data-anchor-id="recoding-na-values-into-string">Recoding NA values into string</h3>
+<p>In the code chunk below, <code>replace_na()</code> is used to recode all the <em>NA</em> values in <em>status_clean</em> field into <em>Unknown</em>.</p>
+<div class="cell">
+
+</div>
+</section>
+<section id="eda" class="level3">
+<h3 class="anchored" data-anchor-id="eda">EDA</h3>
+<p>In the code chunk below, <code>freq()</code> of <strong>funModeling</strong> package is used to display the distribution of <em>status_clean</em> field in <em>wp_nga</em>.</p>
+<div class="cell">
+
+</div>
+</section>
+</section>
+<section id="extracting-water-point-data" class="level2">
+<h2 class="anchored" data-anchor-id="extracting-water-point-data">Extracting Water Point Data</h2>
+<p>In this section, we will extract the water point records by using classes in <em>status_cle</em> anfield.</p>
+<section id="extracting-funtional-water-point" class="level3">
+<h3 class="anchored" data-anchor-id="extracting-funtional-water-point">Extracting funtional water point</h3>
+<p>In the code chunk below, <code>filter()</code> of dplyr is used to select functional water points.</p>
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+</section>
+<section id="extracting-non-funtional-water-point" class="level3">
+<h3 class="anchored" data-anchor-id="extracting-non-funtional-water-point">Extracting non-funtional water point</h3>
+<p>In the code chunk below, <code>filter()</code> of dplyr is used to select non-functional water points.</p>
+<div class="cell">
+
+</div>
+<div class="cell">
+
+</div>
+</section>
+<section id="extracting-water-point-with-unknown-class" class="level3">
+<h3 class="anchored" data-anchor-id="extracting-water-point-with-unknown-class">Extracting water point with Unknown class</h3>
+<p>In the code chunk below, <code>filter()</code> of dplyr is used to select water points with unknown status.</p>
+<div class="cell">
+
+</div>
+</section>
+</section>
+<section id="performing-point-in-polygon-count" class="level2">
+<h2 class="anchored" data-anchor-id="performing-point-in-polygon-count">Performing Point-in-Polygon Count</h2>
+<div class="cell">
+
+</div>
+</section>
+<section id="saving-the-analytical-data-table" class="level2">
+<h2 class="anchored" data-anchor-id="saving-the-analytical-data-table">Saving the Analytical Data Table</h2>
+<div class="cell">
+
+</div>
+<p>Things to learn from the code chunk above:</p>
+<ul>
+<li><code>mutate()</code> of <strong>dplyr</strong> package is used to derive two fields namely <em>pct_functional</em> and <em>pct_non-functional</em>.</li>
+</ul>
+<p>Now, you have the tidy sf data table subsequent analysis. We will save the sf data table into rds format.</p>
+<div class="cell">
+
+</div>
+<p>Before you end this section, please remember to delete away all the raw data. Notice that the only data file left is <em>nga_wp.rds</em> and it’s file size is around 2.1MB.</p>
+</section>
+<section id="visualising-the-spatial-distribution-of-water-points" class="level2">
+<h2 class="anchored" data-anchor-id="visualising-the-spatial-distribution-of-water-points">Visualising the spatial distribution of water points</h2>
+<div class="cell">
+
+</div>
 
 
 </section>
