@@ -216,22 +216,22 @@ total <- qtm(nga_wp_1, "total wpt") +
   tm_layout(legend.height = 0.25, 
             legend.width = 0.35,
             main.title = "Distribution of Total Waterpoints at LGA level",
-            main.title.size = 0.7)
+            main.title.size = 1.0)
 wp_functional <- qtm(nga_wp_1, "wpt functional") + 
   tm_layout(legend.height = 0.25, 
             legend.width = 0.35,
             main.title = "Distribution of Functional Waterpoints at LGA level",
-            main.title.size = 0.7)
+            main.title.size = 1.0)
 wp_nonfunctional <- qtm(nga_wp_1, "wpt non-functional") + 
   tm_layout(legend.height = 0.25, 
             legend.width = 0.35,
             main.title = "Distribution of Non-Functional Waterpoints at LGA level",
-            main.title.size = 0.7)
+            main.title.size = 1.0)
 unknown <- qtm(nga_wp_1, "wpt unknown") + 
   tm_layout(legend.height = 0.25, 
             legend.width = 0.35,
             main.title = "Distribution of Unknown Waterpoints at LGA level",
-            main.title.size = 0.7)
+            main.title.size = 1.0)
 tmap_arrange(total, wp_functional, wp_nonfunctional, unknown, asp=1, ncol=2) 
 ```
 
