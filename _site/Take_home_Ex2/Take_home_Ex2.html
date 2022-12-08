@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.189">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>ISSS624 - Take_home_Ex2</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">ISSS624</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-hands-on-exercise" role="button" data-bs-toggle="dropdown" aria-expanded="false">Hands-on Exercise</a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-hands-on-exercise">    
+        <li>
+    <a class="dropdown-item" href="../Hands_on_Ex1/Hands_on_Ex1.html">
+ <span class="dropdown-text">Hands-on Exercise 1a</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../Hands_on_Ex1/Hands_on_Ex1b.html">
+ <span class="dropdown-text">Hands-on Exercise 1b</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../Hands_on_Ex2/Hands_on_Ex2.html">
+ <span class="dropdown-text">Hands-on Exercise 2</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../Hands_on_Ex3/Hands_on_Ex3.html">
+ <span class="dropdown-text">Hands-on Exercise 3</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../Hands_on_Ex4/Hands_on_Ex4.html">
+ <span class="dropdown-text">Hands-on Exercise 4</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../Hands_on_Ex5/Hands_on_Ex5.html">
+ <span class="dropdown-text">Hands-on Exercise 5</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-in-class-exercise" role="button" data-bs-toggle="dropdown" aria-expanded="false">In-class Exercise</a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-in-class-exercise">    
+        <li>
+    <a class="dropdown-item" href="../In_class_Ex1/In_class_Ex1.html">
+ <span class="dropdown-text">In-class Exercise 1</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../In_class_Ex2/In_class_Ex2.html">
+ <span class="dropdown-text">In-class Exercise 2</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../In_class_Ex3/In_class_Ex3.html">
+ <span class="dropdown-text">In-class Exercise 3</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../In_class_Ex4/In_class_Ex4.html">
+ <span class="dropdown-text">In-class Exercise 4</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../In_class_Ex5/In_class_Ex5.html">
+ <span class="dropdown-text">In-class Exercise 5</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-take-home-exercise" role="button" data-bs-toggle="dropdown" aria-expanded="false">Take-home Exercise</a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-take-home-exercise">    
+        <li>
+    <a class="dropdown-item" href="../Take_home_Ex1/Take_home_Ex1.html">
+ <span class="dropdown-text">Take-home Exercise 1</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../Take_home_Ex1/Take_home_Ex2.qmd">
+ <span class="dropdown-text">Take-home Exercise 2</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html">About</a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"></a></li>
+  <li><a href="#data-import" id="toc-data-import" class="nav-link" data-scroll-target="#data-import">Data Import</a>
+  <ul class="collapse">
+  <li><a href="#importing-water-point-data" id="toc-importing-water-point-data" class="nav-link" data-scroll-target="#importing-water-point-data">Importing water point data</a></li>
+  <li><a href="#importing-nigeria-lga-level-boundary-data" id="toc-importing-nigeria-lga-level-boundary-data" class="nav-link" data-scroll-target="#importing-nigeria-lga-level-boundary-data">Importing Nigeria LGA level boundary data</a></li>
+  <li><a href="#checking-of-duplicated-area-name" id="toc-checking-of-duplicated-area-name" class="nav-link" data-scroll-target="#checking-of-duplicated-area-name"><strong>Checking of duplicated area name</strong></a></li>
+  </ul></li>
+  <li><a href="#point-in-polygon-overlay" id="toc-point-in-polygon-overlay" class="nav-link" data-scroll-target="#point-in-polygon-overlay">Point in Polygon Overlay</a></li>
+  <li><a href="#data-wrangling" id="toc-data-wrangling" class="nav-link" data-scroll-target="#data-wrangling">Data Wrangling</a>
+  <ul class="collapse">
+  <li><a href="#recoding-na-values-into-string" id="toc-recoding-na-values-into-string" class="nav-link" data-scroll-target="#recoding-na-values-into-string">Recoding NA values into string</a></li>
+  <li><a href="#extracting-functional-water-point" id="toc-extracting-functional-water-point" class="nav-link" data-scroll-target="#extracting-functional-water-point">Extracting functional water point</a></li>
+  <li><a href="#extracting-non-functional-water-point" id="toc-extracting-non-functional-water-point" class="nav-link" data-scroll-target="#extracting-non-functional-water-point">Extracting non-functional water point</a></li>
+  <li><a href="#extracting-water-point-with-unknown-class" id="toc-extracting-water-point-with-unknown-class" class="nav-link" data-scroll-target="#extracting-water-point-with-unknown-class">Extracting water point with Unknown class</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Take_home_Ex2</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<section id="overview" class="level2">
+<h2 class="anchored" data-anchor-id="overview">Overview</h2>
+<p>This take-home exercise 2 aims to complete the following tasks:</p>
+<ul>
+<li><p>Using appropriate sf method, import the shapefile into R and save it in a simple feature data frame format.</p></li>
+<li><p>Using appropriate tidyr and dplyr methods, derive the proportion of functional andnon-functional water point at LGA level (i.e.&nbsp;ADM2).</p></li>
+<li><p>Combining the geospatial and aspatial data frame into simple feature data frame.</p></li>
+<li><p>Delineating water point measures functional regions by using conventional hierarchical clustering.</p></li>
+<li><p>Delineating water point measures functional regions by using spatially constrained clustering algorithms.</p></li>
+</ul>
+</section>
+<section id="section" class="level2">
+<h2 class="anchored" data-anchor-id="section"></h2>
+<p>Getting Started</p>
+<p>In the code chunk below, <code>p_load()</code> of <em>pacman</em> package is used to install and load the following R packages into R environment:</p>
+<ul>
+<li><p>sf: for importing, managing, and processing geospatial data</p></li>
+<li><p>tidyverse: for performing data science tasks such as importing, wrangling and visualising data</p></li>
+<li><p>tmap: for plotting choropleth map to show the distribution</p></li>
+<li><p>spdep: for computing Global and Local Measure of Spatial Autocorrelation (GLSA)</p></li>
+<li><p>funModeling: for rapid Exploratory Data Analysis</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tmap, sf, tidyverse, spdep, funModeling)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="data-import" class="level2">
+<h2 class="anchored" data-anchor-id="data-import">Data Import</h2>
+<p>In this in-class exercise, two data sets will be used. They are:</p>
+<ul>
+<li>geo_export (data from WPdx Global Data Repositories)</li>
+<li>geoBoundaries-NGA-ADM2 (Nigeria Level-2 Administrative Boundary, also known as Local Government Area, polygon features GIS data)</li>
+</ul>
+<section id="importing-water-point-data" class="level3">
+<h3 class="anchored" data-anchor-id="importing-water-point-data">Importing water point data</h3>
+<p>The code chunk below imports the water point data into R environment. Instead of using <code>read.csv()</code> of Base R to import the csv file into R, <code>read_csv()</code> of <strong>readr</strong> package is used. This is because during the initial data exploration, we notice that there is at least one field name with space between the field name (ie. <em>New Georeferenced Column</em>).</p>
+<p>Also, as we are interested on water point in Nigeria in this study, <code>filter()</code> of <strong>dplyr</strong> is used to extract out records belong to Nigeria only.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>wp_nga <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"geodata/WPdx.csv"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">`</span><span class="at">#clean_country_name</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"Nigeria"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: One or more parsing issues, call `problems()` on your data frame for details,
+e.g.:
+  dat &lt;- vroom(...)
+  problems(dat)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 406566 Columns: 70
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (43): #source, #report_date, #status_id, #water_source_clean, #water_sou...
+dbl (23): row_id, #lat_deg, #lon_deg, #install_year, #fecal_coliform_value, ...
+lgl  (4): #rehab_year, #rehabilitator, is_urban, latest_record
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+</div>
+<section id="convert-wkt-data" class="level4">
+<h4 class="anchored" data-anchor-id="convert-wkt-data">Convert wkt data</h4>
+<p>After the data are imported into R environment, we need to review both the data structure and the data table if it is in tibble data frame format in R Studio. Notice that the newly imported tibble data frame (i.e.&nbsp;wp_nga) contains a field called <em>New Georeferenced Column</em> which represent spatial data in a textual format. In fact, this kind of text file is popularly known as <strong>Well Known Text</strong> in short <strong>wkt</strong>.</p>
+<p>Two steps will be used to convert an aspatial data file in wkt format into a sf data frame by using sf.</p>
+<p>First, <code>st_as_sfc()</code> of sf package is used to derive a new field called <em>Geometry</em> as shown in the code chunk below.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>wp_nga<span class="sc">$</span>Geometry <span class="ot">=</span> <span class="fu">st_as_sfc</span>(wp_nga<span class="sc">$</span><span class="st">`</span><span class="at">New Georeferenced Column</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Next, <code>st_sf()</code> will be used to convert the tibble data frame into sf data frame and a new sf data frame called <em>wp_sf</em> will be created.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>wp_sf <span class="ot">&lt;-</span> <span class="fu">st_sf</span>(wp_nga, <span class="at">crs=</span><span class="dv">4326</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="importing-nigeria-lga-level-boundary-data" class="level3">
+<h3 class="anchored" data-anchor-id="importing-nigeria-lga-level-boundary-data">Importing Nigeria LGA level boundary data</h3>
+<p>For the purpose of this exercise, shapefile downloaded from <a href="https://www.geoboundaries.org/">geoBoundaries</a> portal will be used.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>nga <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="at">dsn =</span> <span class="st">"geodata"</span>,</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>               <span class="at">layer =</span> <span class="st">"geoBoundaries-NGA-ADM2"</span>,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">crs =</span> <span class="dv">4326</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(shapeName)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Reading layer `geoBoundaries-NGA-ADM2' from data source 
+  `/Users/bytedance/Downloads/zoe-nine/ISSS624/Take_home_Ex2/geodata' 
+  using driver `ESRI Shapefile'
+Simple feature collection with 774 features and 5 fields
+Geometry type: MULTIPOLYGON
+Dimension:     XY
+Bounding box:  xmin: 2.668534 ymin: 4.273007 xmax: 14.67882 ymax: 13.89442
+Geodetic CRS:  WGS 84</code></pre>
+</div>
+</div>
+</section>
+<section id="checking-of-duplicated-area-name" class="level3">
+<h3 class="anchored" data-anchor-id="checking-of-duplicated-area-name"><strong>Checking of duplicated area name</strong></h3>
+<p>Firstly, we will order our dataframe by alphabetical order based on the shapeName. We will then use the <code>duplicated</code> function to retrieve all the shapeName that has duplicates and store it in a list. From the result below, we identified <strong>12</strong> shapeNames that are duplicates.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>nga<span class="ot">&lt;-</span> (nga[<span class="fu">order</span>(nga<span class="sc">$</span>shapeName), ])</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>duplicate_area <span class="ot">&lt;-</span> nga<span class="sc">$</span>shapeName[nga<span class="sc">$</span>shapeName <span class="sc">%in%</span> nga<span class="sc">$</span>shapeName[<span class="fu">duplicated</span>(nga<span class="sc">$</span>shapeName)] ]</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>duplicate_area</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "Bassa"    "Bassa"    "Ifelodun" "Ifelodun" "Irepodun" "Irepodun"
+ [7] "Nasarawa" "Nasarawa" "Obi"      "Obi"      "Surulere" "Surulere"</code></pre>
+</div>
+</div>
+<p>Through the use of Google, we are able to retrieve the actual name and state of the areas. The table below shows the index and the actual name of the area. Then we will access the individual index of the <code>nigeria</code> data frame and change the value. Lastly, we use the <a href="https://rdrr.io/r/base/length.html"><code>length()</code></a> function to ensure there is no more duplicated shapeName.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>nga<span class="sc">$</span>shapeName[<span class="fu">c</span>(<span class="dv">94</span>,<span class="dv">95</span>,<span class="dv">304</span>,<span class="dv">305</span>,<span class="dv">355</span>,<span class="dv">356</span>,<span class="dv">519</span>,<span class="dv">546</span>,<span class="dv">547</span>,<span class="dv">693</span>,<span class="dv">694</span>)] <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Bassa (Kogi)"</span>,<span class="st">"Bassa (Plateau)"</span>,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Ifelodun (Kwara)"</span>,<span class="st">"Ifelodun (Osun)"</span>,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Irepodun (Kwara)"</span>,<span class="st">"Irepodun (Osun)"</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Nassarawa"</span>,<span class="st">"Obi (Benue)"</span>,<span class="st">"Obi(Nasarawa)"</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Surulere (Lagos)"</span>,<span class="st">"Surulere (Oyo)"</span>)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>((nga<span class="sc">$</span>shapeName[nga<span class="sc">$</span>shapeName <span class="sc">%in%</span> nga<span class="sc">$</span>shapeName[<span class="fu">duplicated</span>(nga<span class="sc">$</span>shapeName)] ]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="point-in-polygon-overlay" class="level2">
+<h2 class="anchored" data-anchor-id="point-in-polygon-overlay">Point in Polygon Overlay</h2>
+<p>The code chunk below use a geoprocessing function (or commonly know as GIS analysis) called <strong>point-in-polygon overlay</strong> to transfer the attribute information in <em>nga</em> sf data frame into <em>wp_sf</em> data frame.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>wp_sf <span class="ot">&lt;-</span> <span class="fu">st_join</span>(wp_sf, nga)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="data-wrangling" class="level2">
+<h2 class="anchored" data-anchor-id="data-wrangling">Data Wrangling</h2>
+<section id="recoding-na-values-into-string" class="level3">
+<h3 class="anchored" data-anchor-id="recoding-na-values-into-string">Recoding NA values into string</h3>
+<p>In the code chunk below, <code>replace_na()</code> is used to recode all the <em>NA</em> values in <em>status_clean</em> field into <em>Unknown</em>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>wp_sf <span class="ot">&lt;-</span> wp_sf <span class="sc">%&gt;%</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">#status_clean</span><span class="st">`</span><span class="ot">=</span> <span class="fu">replace_na</span>(<span class="st">`</span><span class="at">#status_clean</span><span class="st">`</span>, <span class="st">"Unknown"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="extracting-functional-water-point" class="level3">
+<h3 class="anchored" data-anchor-id="extracting-functional-water-point">Extracting functional water point</h3>
+<p>In the code chunk below, <code>filter()</code> of dplyr is used to select functional water points.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>wpt_functional <span class="ot">&lt;-</span> wp_sf <span class="sc">%&gt;%</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">`</span><span class="at">#status_clean</span><span class="st">`</span> <span class="sc">%in%</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>           <span class="fu">c</span>(<span class="st">"Functional"</span>, </span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Functional but not in use"</span>,</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Functional but needs repair"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="extracting-non-functional-water-point" class="level3">
+<h3 class="anchored" data-anchor-id="extracting-non-functional-water-point">Extracting non-functional water point</h3>
+<p>In the code chunk below, <code>filter()</code> of dplyr is used to select non-functional water points.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>wpt_nonfunctional <span class="ot">&lt;-</span> wp_sf <span class="sc">%&gt;%</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">`</span><span class="at">#status_clean</span><span class="st">`</span> <span class="sc">%in%</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>           <span class="fu">c</span>(<span class="st">"Abandoned/Decommissioned"</span>, </span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Abandoned"</span>,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Non-Functional"</span>,</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Non functional due to dry season"</span>,</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Non-Functional due to dry season"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="extracting-water-point-with-unknown-class" class="level3">
+<h3 class="anchored" data-anchor-id="extracting-water-point-with-unknown-class">Extracting water point with Unknown class</h3>
+<p>In the code chunk below, <code>filter()</code> of dplyr is used to select water points with unknown status.</p>
+<pre><code></code></pre>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
