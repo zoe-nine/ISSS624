@@ -1,0 +1,307 @@
+---
+title: "Take_home_Ex2"
+editor: visual
+execute: 
+  warning: false
+  message: false
+---
+
+## Overview
+
+This take-home exercise 2 aims to complete the following tasks:
+
+-   Using appropriate sf method, import the shapefile into R and save it in a simple feature data frame format.
+
+-   Using appropriate tidyr and dplyr methods, derive the proportion of functional andnon-functional water point at LGA level (i.e. ADM2).
+
+-   Combining the geospatial and aspatial data frame into simple feature data frame.
+
+-   Delineating water point measures functional regions by using conventional hierarchical clustering.
+
+-   Delineating water point measures functional regions by using spatially constrained clustering algorithms.
+
+## Getting Started
+
+In the code chunk below, `p_load()` of *pacman* package is used to install and load the following R packages into R environment:
+
+-   sf: for importing, managing, and processing geospatial data
+
+-   tidyverse: for performing data science tasks such as importing, wrangling and visualising data
+
+-   tmap: for plotting choropleth map to show the distribution
+
+-   spdep: for computing Global and Local Measure of Spatial Autocorrelation (GLSA)
+
+-   funModeling: for rapid Exploratory Data Analysis
+
+```{r}
+pacman::p_load(tmap, sf, tidyverse, spdep, funModeling,ClustGeo, 
+               ggpubr, cluster, factoextra, NbClust,
+               heatmaply, corrplot, psych, tidyverse,
+               plotly, ggdendro, GGally)
+```
+
+## Data Import
+
+In this in-class exercise, two data sets will be used. They are:
+
+-   geo_export (data from WPdx Global Data Repositories)
+-   geoBoundaries-NGA-ADM2 (Nigeria Level-2 Administrative Boundary, also known as Local Government Area, polygon features GIS data)
+
+### Importing water point data
+
+The code chunk below imports the water point data into R environment. Instead of using `read.csv()` of Base R to import the csv file into R, `read_csv()` of **readr** package is used. This is because during the initial data exploration, we notice that there is at least one field name with space between the field name (ie. *New Georeferenced Column*).
+
+Also, as we are interested on water point in Nigeria in this study, `filter()` of **dplyr** is used to extract out records belong to Nigeria only.
+
+```{r}
+#| eval: false
+wp_nga <- read_csv("geodata/WPdx.csv") %>%
+  filter(`#clean_country_name` == "Nigeria")
+```
+
+#### Convert wkt data
+
+After the data are imported into R environment, we need to review both the data structure and the data table if it is in tibble data frame format in R Studio. Notice that the newly imported tibble data frame (i.e. wp_nga) contains a field called *New Georeferenced Column* which represent spatial data in a textual format. In fact, this kind of text file is popularly known as **Well Known Text** in short **wkt**.
+
+Two steps will be used to convert an aspatial data file in wkt format into a sf data frame by using sf.
+
+First, `st_as_sfc()` of sf package is used to derive a new field called *Geometry* as shown in the code chunk below.
+
+```{r}
+#| eval: false
+wp_nga$Geometry = st_as_sfc(wp_nga$`New Georeferenced Column`)
+```
+
+Next, `st_sf()` will be used to convert the tibble data frame into sf data frame and a new sf data frame called *wp_sf* will be created.
+
+```{r}
+#| eval: false
+wp_sf <- st_sf(wp_nga, crs=4326) 
+```
+
+### Importing Nigeria LGA level boundary data
+
+For the purpose of this exercise, shapefile downloaded from [geoBoundaries](https://www.geoboundaries.org/) portal will be used.
+
+```{r}
+#| eval: false
+nga <- st_read(dsn = "geodata",
+               layer = "geoBoundaries-NGA-ADM2",
+               crs = 4326) %>%
+  select(shapeName)
+```
+
+### **Checking of duplicated area name** 
+
+Firstly, we will order our dataframe by alphabetical order based on the shapeName. We will then use the `duplicated` function to retrieve all the shapeName that has duplicates and store it in a list. From the result below, we identified **12** shapeNames that are duplicates.
+
+```{r}
+#| eval: false
+nga<- (nga[order(nga$shapeName), ])
+duplicate_area <- nga$shapeName[nga$shapeName %in% nga$shapeName[duplicated(nga$shapeName)] ]
+duplicate_area
+```
+
+Through the use of Google, we are able to retrieve the actual name and state of the areas. The table below shows the index and the actual name of the area. Then we will access the individual index of the `nigeria` data frame and change the value. Lastly, we use the [`length()`](https://rdrr.io/r/base/length.html) function to ensure there is no more duplicated shapeName.
+
+```{r}
+#| eval: false
+nga$shapeName[c(94,95,304,305,355,356,519,546,547,693,694)] <- c(
+  "Bassa (Kogi)","Bassa (Plateau)",
+  "Ifelodun (Kwara)","Ifelodun (Osun)",
+  "Irepodun (Kwara)","Irepodun (Osun)",
+  "Nassarawa","Obi (Benue)","Obi(Nasarawa)",
+  "Surulere (Lagos)","Surulere (Oyo)")
+
+length((nga$shapeName[nga$shapeName %in% nga$shapeName[duplicated(nga$shapeName)] ]))
+```
+
+## Point in Polygon Overlay
+
+The code chunk below use a geoprocessing function (or commonly know as GIS analysis) called **point-in-polygon overlay** to transfer the attribute information in *nga* sf data frame into *wp_sf* data frame.
+
+```{r}
+#| eval: false
+wp_sf <- st_join(wp_sf, nga)
+```
+
+## Data Wrangling
+
+### Recoding NA values into string
+
+In the code chunk below, `replace_na()` is used to recode all the *NA* values in *status_clean, water_tech_category* fields into *Unknown*.
+
+```{r}
+#| eval: false
+wp_sf <- wp_sf %>%
+  mutate(`#status_clean`= replace_na(`#status_clean`, "Unknown")) %>%
+  mutate(`#water_tech_category`= replace_na(`#water_tech_category`, "Unknown"))
+```
+
+### Extracting functional water point
+
+In the code chunk below, `filter()` of dplyr is used to select functional water points.
+
+```{r}
+#| eval: false
+wpt_functional <- wp_sf %>%
+  filter(`#status_clean` %in%
+           c("Functional", 
+             "Functional but not in use",
+             "Functional but needs repair"))
+```
+
+### Extracting non-functional water point
+
+In the code chunk below, `filter()` of dplyr is used to select non-functional water points.
+
+```{r}
+#| eval: false
+wpt_nonfunctional <- wp_sf %>%
+  filter(`#status_clean` %in%
+           c("Abandoned/Decommissioned", 
+             "Abandoned",
+             "Non-Functional",
+             "Non functional due to dry season",
+             "Non-Functional due to dry season"))
+```
+
+### Extracting water point with Unknown class
+
+In the code chunk below, `filter()` of dplyr is used to select water points with unknown status.
+
+```{r}
+#| eval: false
+wpt_unknown <- wp_sf %>%
+  filter(`#status_clean` == "Unknown")
+```
+
+### Extracting main water point technology
+
+The code chunk below plots a distribution of water technology categories so that the main water point technology would be selected and technology with lower proportion would be discarded.
+
+```{r}
+#| eval: false
+freq(data=wp_sf, 
+     input = '#water_tech_category')
+```
+
+![](images/Screenshot%202022-12-09%20at%2011.18.40%20PM.png)
+
+In the code chunk below, `filter()` of dplyr is used to select main water point technology (hand pump and mechanized pump).
+
+```{r}
+#| eval: false
+wpt_handbump <- wp_sf %>%
+  filter(`#water_tech_category` == "Hand Pump")
+```
+
+```{r}
+#| eval: false
+wpt_mechanisdpump <- wp_sf %>%
+  filter(`#water_tech_category` == "Mechanized Pump")
+```
+
+### Extracting usage capacity of water points
+
+In the code chunk below, `filter()` of dplyr is used to select water points with usage capacity \<1000 and \>=1000.
+
+```{r}
+#| eval: false
+wpt_lowusage <- wp_sf %>%
+  filter(usage_capacity < 1000)
+```
+
+```{r}
+#| eval: false
+wpt_highusage <- wp_sf %>%
+  filter(usage_capacity >= 1000)
+```
+
+### Extracting rural water points
+
+In the code chunk below, `filter()` of dplyr is used to select rural water points.
+
+```{r}
+#| eval: false
+wpt_rural <- wp_sf %>%
+  filter(is_urban == FALSE)
+```
+
+### Performing Point-in-Polygon Count
+
+```{r}
+#| eval: false
+nga_wp <- nga %>% 
+  mutate(`total wpt` = lengths(
+    st_intersects(nga, wp_sf))) %>%
+  mutate(`wpt functional` = lengths(
+    st_intersects(nga, wpt_functional))) %>%
+  mutate(`wpt non-functional` = lengths(
+    st_intersects(nga, wpt_nonfunctional))) %>%
+  mutate(`wpt unknown` = lengths(
+    st_intersects(nga, wpt_unknown)))%>%
+  mutate(wpt_handbump = lengths(
+    st_intersects(nga, wpt_handbump))) %>%
+  mutate(wpt_mechanisdpump = lengths(
+    st_intersects(nga, wpt_mechanisdpump))) %>%
+  mutate(wpt_highusage = lengths(
+    st_intersects(nga, wpt_highusage))) %>%
+  mutate(wpt_lowusage = lengths(
+    st_intersects(nga, wpt_lowusage))) %>%
+  mutate(wpt_rural = lengths(
+    st_intersects(nga, wpt_rural)))
+```
+
+### Computing Relevant Ratios of Water Points
+
+The code chunk below uses `mutate()` of **dplyr** package to derive two fields namely *pct_functional* and *pct_non-functional*. Then, `is_na()` is used to replace all the *NaN* values in the percentage fields into *0*.
+
+```{r}
+#| eval: false
+nga_wp <- nga_wp %>%
+  mutate(pct_functional = `wpt functional`/`total wpt`) %>%
+  mutate(`pct_non-functional` = `wpt non-functional`/`total wpt`) %>%
+  mutate(pct_handpump = wpt_handbump/`total wpt`) %>%
+  mutate(pct_mechanised = wpt_mechanisdpump/`total wpt`) %>%
+  mutate(pct_highusage = wpt_highusage/`total wpt`) %>%
+  mutate(pct_lowusage = wpt_lowusage/`total wpt`) %>%
+  mutate(pct_rural = wpt_rural/`total wpt`)
+
+nga_wp[is.na(nga_wp)] = 0
+```
+
+To review the summary statistics of *nga_wp*, we could use the code chunk below.
+
+```{r}
+#| eval: false
+summary(nga_wp)
+```
+
+## Transforming of Projection
+
+Using `st_crs()`，we could check the EPSG code of the data table. As it could be seen that the wrong EPSG code is used and we need to change it to 26391, which is the Projected Coordinate Systems of Nigeria.
+
+```{r}
+#| eval: false
+nga_wp <- read_rds("geodata/nga_wp.rds")
+st_crs(nga_wp)
+```
+
+```{r}
+#| eval: false
+nga_wp <- st_transform(nga_wp,26391)
+st_crs(nga_wp)
+```
+
+## Saving the Analytical Data Table
+
+The code chunk below saves the tidy sf data table into rds format for subsequent analysis.
+
+```{r}
+#| eval: false
+write_rds(nga_wp, "geodata/nga_wp.rds")
+```
+
+## Exploratory Data Analysis (EDA)

@@ -61,7 +61,7 @@ pacman::p_load(olsrr, corrplot, ggpubr, sf, spdep, GWmodel, tmap, tidyverse, gts
 
 ### Importing geospatial data
 
-The geospatial data used in this hands-on exercise is called MP14_SUBZONE_WEB_PL. It is in ESRI shapefile format. The shapefile consists of URA Master Plan 2014\'s planning subzone boundaries. Polygon features are used to represent these geographic boundaries. The GIS data is in svy21 projected coordinates systems.
+The geospatial data used in this hands-on exercise is called MP14_SUBZONE_WEB_PL. It is in ESRI shapefile format. The shapefile consists of URA Master Plan 2014's planning subzone boundaries. Polygon features are used to represent these geographic boundaries. The GIS data is in svy21 projected coordinates systems.
 
 The code chunk below is used to import *MP_SUBZONE_WEB_PL* shapefile by using `st_read()` of **sf** packages.
 
@@ -258,7 +258,7 @@ The code chunk below builds a simple linear regression model by using *SELLING_P
 condo.slr <- lm(formula=SELLING_PRICE ~ AREA_SQM, data = condo_resale.sf)
 ```
 
-`lm()` returns an object of class \"lm\" or for multiple responses of class c(\"mlm\", \"lm\").
+`lm()` returns an object of class "lm" or for multiple responses of class c("mlm", "lm").
 
 The functions `summary()` and `anova()` can be used to obtain and print a summary and analysis of variance table of the results. The generic accessor functions coefficients, effects, fitted.values and residuals extract various useful features of the value returned by `lm`.
 
@@ -274,7 +274,7 @@ The R-squared of 0.4518 reveals that the simple regression model built is able t
 
 The **Coefficients:** section of the report reveals that the p-values of both the estimates of the Intercept and ARA_SQM are smaller than 0.001. In view of this, the null hypothesis of the B0 and B1 are equal to 0 will be rejected. As a results, it could be inferred that the B0 and B1 are good parameter estimates.
 
-To visualise the best fit curve on a scatterplot, the code chunk below incorporates `lm()` as a method function in ggplot\'s geometry.
+To visualise the best fit curve on a scatterplot, the code chunk below incorporates `lm()` as a method function in ggplot's geometry.
 
 ```{r}
 ggplot(data=condo_resale.sf,  
@@ -300,7 +300,7 @@ corrplot(cor(condo_resale[, 5:23]), diag = FALSE, order = "AOE",
          tl.pos = "td", tl.cex = 0.5, method = "number", type = "upper")
 ```
 
-Matrix reorder is very important for mining the hiden structure and patter in the matrix. There are four methods in corrplot (parameter order), named \"AOE\", \"FPC\", \"hclust\", \"alphabet\". In the code chunk above, AOE order is used. It orders the variables by using the *angular order of the eigenvectors* method suggested by [Michael Friendly](https://www.datavis.ca/papers/corrgram.pdf).
+Matrix reorder is very important for mining the hiden structure and patter in the matrix. There are four methods in corrplot (parameter order), named "AOE", "FPC", "hclust", "alphabet". In the code chunk above, AOE order is used. It orders the variables by using the *angular order of the eigenvectors* method suggested by [Michael Friendly](https://www.datavis.ca/papers/corrgram.pdf).
 
 From the scatterplot matrix, it is clear that ***Freehold*** is highly correlated to ***LEASE_99YEAR***. In view of this, it is wiser to only include either one of them in the subsequent model building. As a result, ***LEASE_99YEAR*** is excluded in the subsequent model building.
 
@@ -465,7 +465,7 @@ tm_shape(condo_resale.res.sf) +
 tmap_mode("plot")
 ```
 
-The figure above reveal that there is sign of spatial autocorrelation and hence the Moran\'s I test will be performed.
+The figure above reveal that there is sign of spatial autocorrelation and hence the Moran's I test will be performed.
 
 First, the code chunk below computes the distance-based weight matrix by using [`dnearneigh()`](https://r-spatial.github.io/spdep/reference/dnearneigh.html) function of **spdep**.
 
@@ -481,13 +481,13 @@ nb_lw <- nb2listw(nb, style = 'W')
 summary(nb_lw)
 ```
 
-Next, [`lm.morantest()`](https://r-spatial.github.io/spdep/reference/lm.morantest.html) of **spdep** package will be used to perform Moran\'s I test for residual spatial autocorrelation
+Next, [`lm.morantest()`](https://r-spatial.github.io/spdep/reference/lm.morantest.html) of **spdep** package will be used to perform Moran's I test for residual spatial autocorrelation
 
 ```{r}
 lm.morantest(condo.mlr1, nb_lw)
 ```
 
-The Global Moran\'s I test for residual spatial autocorrelation shows that it\'s p-value is less than 0.00000000000000022 which is less than the alpha value of 0.05. Hence, I will reject the null hypothesis that the residuals are randomly distributed. Since the Observed Global Moran I = 0.1424418 which is greater than 0, it could be inferred that the residuals resemble cluster distribution.
+The Global Moran's I test for residual spatial autocorrelation shows that it's p-value is less than 0.00000000000000022 which is less than the alpha value of 0.05. Hence, I will reject the null hypothesis that the residuals are randomly distributed. Since the Observed Global Moran I = 0.1424418 which is greater than 0, it could be inferred that the residuals resemble cluster distribution.
 
 ## Building Hedonic Pricing Models using GWmodel
 
@@ -532,7 +532,7 @@ gwr.fixed <- gwr.basic(formula = SELLING_PRICE ~ AREA_SQM + AGE + PROX_CBD +
                        longlat = FALSE)
 ```
 
-The output is saved in a list of class \"gwrm\". The code below can be used to display the model output.
+The output is saved in a list of class "gwrm". The code below can be used to display the model output.
 
 ```{r}
 gwr.fixed
@@ -603,7 +603,7 @@ In addition to regression residuals, the output feature class table includes fie
 
 -   Coefficient Standard Error: these values measure the reliability of each coefficient estimate. Confidence in those estimates are higher when standard errors are small in relation to the actual coefficient values. Large standard errors may indicate problems with local collinearity.
 
-They are all stored in a SpatialPointsDataFrame or SpatialPolygonsDataFrame object integrated with fit.points, GWR coefficient estimates, y value, predicted values, coefficient standard errors and t-values in its \"data\" slot in an object called **SDF** of the output list.
+They are all stored in a SpatialPointsDataFrame or SpatialPolygonsDataFrame object integrated with fit.points, GWR coefficient estimates, y value, predicted values, coefficient standard errors and t-values in its "data" slot in an object called **SDF** of the output list.
 
 ### Converting SDF into *sf* data.frame
 
