@@ -92,7 +92,7 @@ nga <- st_read(dsn = "geodata",
   select(shapeName)
 ```
 
-### **Checking of duplicated area name** 
+### **Checking of duplicated area name**
 
 Firstly, we will order our dataframe by alphabetical order based on the shapeName. We will then use the `duplicated` function to retrieve all the shapeName that has duplicates and store it in a list. From the result below, we identified **12** shapeNames that are duplicates.
 
@@ -305,3 +305,100 @@ write_rds(nga_wp, "geodata/nga_wp.rds")
 ```
 
 ## Exploratory Data Analysis (EDA)
+
+### EDA using statistical graphics
+
+The code chunk below plots the distribution of the numerical variables by using appropriate Exploratory Data Analysis (EDA). Histogram is chosen as it is useful to identify the overall distribution of the data values (i.e. left skew, right skew or normal distribution).
+
+First, I will create the individual histograms. Next, the [*ggarrange()*](https://rpkgs.datanovia.com/ggpubr/reference/ggarrange.html) function of [**ggpubr**](https://rpkgs.datanovia.com/ggpubr/) package is used to group these histograms together.
+
+```{r,fig.width=10, fig.height=8}
+wpt_func <- ggplot(data=nga_wp, 
+             aes(x=`wpt functional`)) +
+  geom_histogram(bins=20, 
+                 color="black", 
+                 fill="light blue")
+
+wpt_nonfunc <- ggplot(data=nga_wp, 
+             aes(x= `wpt non-functional`)) +
+  geom_histogram(bins=20, 
+                 color="black", 
+                 fill="light blue")
+
+wpt_pct_func <- ggplot(data=nga_wp, 
+             aes(x=pct_functional)) +
+  geom_histogram(bins=20, 
+                 color="black", 
+                 fill="light blue")
+
+wpt_pct_nonfunc <- ggplot(data=nga_wp, 
+             aes(x=`pct_non-functional`)) +
+  geom_histogram(bins=20, 
+                 color="black", 
+                 fill="light blue")
+
+wpt_pct_handpump <- ggplot(data=nga_wp, 
+             aes(x= pct_handpump)) +
+  geom_histogram(bins=20, 
+                 color="black", 
+                 fill="light blue")
+
+wpt_pct_mechanised <- ggplot(data=nga_wp, 
+             aes(x= pct_mechanised)) +
+  geom_histogram(bins=20, 
+                 color="black", 
+                 fill="light blue")
+
+wpt_pct_high <- ggplot(data=nga_wp, 
+             aes(x= pct_highusage)) +
+  geom_histogram(bins=20, 
+                 color="black", 
+                 fill="light blue")
+
+wpt_pct_low <- ggplot(data=nga_wp, 
+             aes(x= pct_lowusage)) +
+  geom_histogram(bins=20, 
+                 color="black", 
+                 fill="light blue")
+
+wpt_pct_rural <- ggplot(data=nga_wp, 
+             aes(x= pct_rural)) +
+  geom_histogram(bins=20, 
+                 color="black", 
+                 fill="light blue")
+
+ggarrange(wpt_func, wpt_nonfunc, wpt_pct_func, wpt_pct_nonfunc, wpt_pct_handpump, 
+          wpt_pct_mechanised, wpt_pct_high, wpt_pct_low, wpt_pct_rural,
+          ncol = 3, 
+          nrow = 3)
+```
+
+**Observation:**
+
+### EDA using choropleth map
+
+## Correlation Analysis
+
+The code chunk below uses [*corrplot.mixed()*](https://cran.r-project.org/web/packages/corrplot/corrplot.pdf) function of [**corrplot**](https://cran.r-project.org/web/packages/corrplot/vignettes/corrplot-intro.html) package to visualise and analyse the correlation of the input variables.
+
+```{r}
+nga_null <- nga_wp %>%
+  st_set_geometry(NULL)
+  
+cluster_vars.cor = cor(nga_null[c(3:4, 11:17)])
+corrplot.mixed(cluster_vars.cor,
+               lower = "ellipse", 
+               upper = "number",
+               tl.pos = "lt",
+               diag = "l",
+               tl.col = "black")
+```
+
+**Observation:**
+
+## Conventional Hierarchical Clustering
+
+## 
+Spatially Constrained Clustering
+
+## Conclusion
