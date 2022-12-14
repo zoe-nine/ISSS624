@@ -35,7 +35,7 @@ In the code chunk below, `p_load()` of *pacman* package is used to install and l
 -   funModeling: for rapid Exploratory Data Analysis
 
 ```{r}
-pacman::p_load(tmap, sf, tidyverse, spdep, funModeling,ClustGeo, 
+pacman::p_load(tmap, sf, tidyverse, spdep, funModeling, ClustGeo, 
                ggpubr, cluster, factoextra, NbClust,
                heatmaply, corrplot, psych, tidyverse,
                plotly, ggdendro, GGally)
@@ -92,7 +92,7 @@ nga <- st_read(dsn = "geodata",
   select(shapeName)
 ```
 
-### **Checking of duplicated area name**
+### **Checking of duplicated area name (reference taken from Jordan)** 
 
 Firstly, we will order our dataframe by alphabetical order based on the shapeName. We will then use the `duplicated` function to retrieve all the shapeName that has duplicates and store it in a list. From the result below, we identified **12** shapeNames that are duplicates.
 
@@ -103,7 +103,7 @@ duplicate_area <- nga$shapeName[nga$shapeName %in% nga$shapeName[duplicated(nga$
 duplicate_area
 ```
 
-Through the use of Google, we are able to retrieve the actual name and state of the areas. The table below shows the index and the actual name of the area. Then we will access the individual index of the `nigeria` data frame and change the value. Lastly, we use the [`length()`](https://rdrr.io/r/base/length.html) function to ensure there is no more duplicated shapeName.
+Through the use of Google, we are able to retrieve the actual name and state of the areas. Then we will access the individual index of the `nigeria` data frame and change the value. Lastly, we use the [`length()`](https://rdrr.io/r/base/length.html) function to ensure there is no more duplicated shapeName.
 
 ```{r}
 #| eval: false
@@ -231,6 +231,8 @@ wpt_rural <- wp_sf %>%
 
 ### Performing Point-in-Polygon Count
 
+The code chunk below performs the point-in-polygon count of the respective fields.
+
 ```{r}
 #| eval: false
 nga_wp <- nga %>% 
@@ -256,7 +258,7 @@ nga_wp <- nga %>%
 
 ### Computing Relevant Ratios of Water Points
 
-The code chunk below uses `mutate()` of **dplyr** package to derive two fields namely *pct_functional* and *pct_non-functional*. Then, `is_na()` is used to replace all the *NaN* values in the percentage fields into *0*.
+The code chunk below uses `mutate()` of **dplyr** package to derive the respective percentage fields. Then, `is_na()` is used to replace all the *NaN* values in the percentage fields into *0*.
 
 ```{r}
 #| eval: false
@@ -498,7 +500,7 @@ corrplot.mixed(cluster_vars.cor,
 
 **Observation:**
 
-It could be seen from the correlation plot that ***pct_mechanised*** and ***pct_highusage*** are highly positively correlated. Also, ***pct_handpump*** and ***pct_lowusage*** are highly positively correlated. On the other hand, ***pct_mechanised*** and ***pct_lowusage*** are highly negatively correlated. ***pct_lowusage*** and ***pct_highusage*** also have high negative correlation. Hence we would drop variable pct_lowusage for this exercise.
+It could be seen from the correlation plot that ***pct_mechanised*** and ***pct_highusage*** are highly positively correlated. Also, ***pct_handpump*** and ***pct_lowusage*** are highly positively correlated. On the other hand, ***pct_mechanised*** and ***pct_lowusage*** are highly negatively correlated. ***pct_lowusage*** and ***pct_highusage*** also have high negative correlation. Hence we would drop variable `pct_lowusage` for this exercise.
 
 ## Conventional Hierarchical Clustering
 
@@ -590,7 +592,7 @@ Next, we can visualise the plot by using [*fviz_gap_stat()*](https://rpkgs.datan
 fviz_gap_stat(gap_stat)
 ```
 
-With reference to the gap statistic graph above, the recommended number of cluster to retain is 1. However, it is not logical to retain only one cluster. By examine the gap statistic graph, the 5-cluster gives the largest gap statistic and should be the next best cluster to pick.
+With reference to the gap statistic graph above, the recommended number of cluster to retain is 1. However, it is not logical to retain only one cluster. By examine the gap statistic graph, the 5-cluster gives the second largest gap statistic and should be the next best cluster to pick.
 
 ### Plotting the dendrograms
 
@@ -613,6 +615,8 @@ nga_wp_1_mat <- data.matrix(nga_wp_1)
 ```
 
 #### Plotting interactive cluster heatmap using *heatmaply()*
+
+In the code chunk below, the [*heatmaply()*](https://talgalili.github.io/heatmaply/reference/heatmaply.html) of [heatmaply](https://talgalili.github.io/heatmaply/) package is used to build an interactive cluster heatmap.
 
 ```{r}
 heatmaply(normalize(nga_wp_1_mat),
@@ -641,15 +645,13 @@ With closed examination of the dendragram above, we have decided to retain five 
 groups <- as.factor(cutree(hclust_ward, k=5))
 ```
 
-The output is called *groups*. It is a *list* object.
-
-In order to visualise the clusters, the *groups* object need to be appended onto *nga_wp_1* simple feature object.
+The output is called *groups*. It is a *list* object. In order to visualise the clusters, the *groups* object need to be appended onto *nga_wp* simple feature object.
 
 The code chunk below form the join in three steps:
 
 -   the *groups* list object will be converted into a matrix;
 
--   *cbind()* is used to append *groups* matrix onto nga_wp_1 to produce an output simple feature object called `nga_wp_1_cluster`; and
+-   *cbind()* is used to append *groups* matrix onto nga_wp to produce an output simple feature object called `nga_wp_cluster`; and
 
 -   *rename* of **dplyr** package is used to rename *as.matrix.groups* field as *CLUSTER*.
 
@@ -686,7 +688,7 @@ ggparcoord(data = nga_wp_cluster,
   theme(axis.text.x = element_text(angle = 90))
 ```
 
-**Observation:** It could be seen from the
+**Observation:** It could be seen from plot that the cluster 2 has a high proportion of non-functional and rural water points. Hence, more efforts should be directed towards the LGAs belonging to this cluster.
 
 ## Spatially Constrained Clustering using SKATER approach
 
@@ -723,7 +725,7 @@ plot(knn,
 
 #### **Calculate edge costs**
 
-Next, [*nbcosts()*](https://r-spatial.github.io/spdep/reference/nbcosts.html) of **spdep** package is used to compute the cost of each edge. It is the distance between it nodes. This function compute this distance using a data.frame with observations vector in each node.
+[*nbcosts()*](https://r-spatial.github.io/spdep/reference/nbcosts.html) of **spdep** package is used to compute the cost of each edge. It is the distance between it nodes. This function compute this distance using a data.frame with observations vector in each node.
 
 The code chunk below is used to compute the cost of each edge.
 
@@ -871,4 +873,4 @@ ggparcoord(data = nga_sf_spatialcluster,
   theme(axis.text.x = element_text(angle = 90))
 ```
 
-**Observation:**
+**Observation:** It could be seen from plot that the cluster 1 has a relatively high proportion of non-functional and high usage water points. Hence, more efforts should be directed towards the maintenance of the waterpoints at the LGAs belonging to this cluster as these waterpoints are in high usage and if they are not functioning properly, many people would be affected.
