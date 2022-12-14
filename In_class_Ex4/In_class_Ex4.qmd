@@ -495,7 +495,7 @@ In this section, I will practice how to modelling hedonic pricing using both the
 
 ### Building Fixed Bandwidth GWR Model
 
-#### Computing fixed bandwith
+#### Computing fixed bandwidth
 
 In the code chunk below `bw.gwr()` of GWModel package is used to determine the optimal fixed bandwidth to use in the model. Notice that the argument ***adaptive*** is set to **FALSE** indicates that we are interested to compute the fixed bandwidth.
 
