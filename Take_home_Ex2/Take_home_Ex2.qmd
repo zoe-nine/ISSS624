@@ -381,46 +381,103 @@ ggarrange(wpt_func, wpt_nonfunc, wpt_pct_func, wpt_pct_nonfunc, wpt_pct_handpump
 The code chunk below shows the spatial distribution of functional and non-functional waterpoint rate (%) at LGA level.
 
 ```{r}
-wpt.nfunctional.map <- tm_shape(nga_wp) + 
-  tm_fill(col = "wpt non-functional",
+percent_functional <- tm_shape(nga_wp) +
+  tm_fill("pct_functional",
           n = 5,
-          style = "jenks", 
-          title = "Non-Functional WP") + 
-  tm_borders(alpha = 0.5) 
+          style = "quantile") +
+  tm_borders(alpha = 0.5) +
+  tm_layout(main.title = "Distribution of Functional Waterpoints rate (%) at LGA level",
+            main.title.position = "center",
+            main.title.size = 0.7,
+            legend.height = 0.2, 
+            legend.width = 0.35)
 
-wpt.npct.map <- tm_shape(nga_wp) + 
-  tm_fill(col = "pct_non-functional",
+percent_nonfunctional <- tm_shape(nga_wp) +
+  tm_fill("pct_non-functional",
           n = 5,
-          style = "jenks",
-          title = "Percentage of Non-Functional WP ") + 
-  tm_borders(alpha = 0.5) 
+          style = "quantile") +
+  tm_borders(alpha = 0.5) +
+  tm_layout(main.title = "Distribution of Non-functional Waterpoints rate (%) at LGA level",
+            main.title.position = "center",
+            main.title.size = 0.7,
+            legend.height = 0.2, 
+            legend.width = 0.35)
 
-tmap_arrange(wpt.nfunctional.map, wpt.npct.map,
-             asp=NA, ncol=2)
+tmap_arrange(percent_functional, 
+             percent_nonfunctional, 
+             asp=1, 
+             ncol=2)
 ```
 
-The code chunk below shows the spatial distribution of high usage and low usage waterpoint rate (%) at LGA level.
+**Observation**: It could be seen that the waterpoint rates of both status (functional or non-functional) are not evenly distributed in Nigeria. Specifically, plenty of the counties at the northeastern region have high percentage of functional waterpoints. On the other hand, plenty of the counties at the southern region have high percentage of non-functional waterpoints.
+
+## 
+
+The code chunk below shows the spatial distribution of handpump and mechanised pump waterpoints (%) at LGA level.
 
 ```{r}
-wpt.nfunctional.map <- tm_shape(nga_wp) + 
-  tm_fill(col = "wpt non-functional",
+percent_handpump <- tm_shape(nga_wp) +
+  tm_fill("pct_handpump",
           n = 5,
-          style = "jenks", 
-          title = "Non-Functional WP") + 
-  tm_borders(alpha = 0.5) 
+          style = "quantile") +
+  tm_borders(alpha = 0.5) +
+  tm_layout(main.title = "Distribution of Handpump Waterpoints rate (%) at LGA level",
+            main.title.position = "center",
+            main.title.size = 0.7,
+            legend.height = 0.2, 
+            legend.width = 0.35)
 
-wpt.npct.map <- tm_shape(nga_wp) + 
-  tm_fill(col = "pct_non-functional",
+percent_mechanisedpump <- tm_shape(nga_wp) +
+  tm_fill("pct_mechanised",
           n = 5,
-          style = "jenks",
-          title = "Percentage of Non-Functional WP ") + 
-  tm_borders(alpha = 0.5) 
+          style = "quantile") +
+  tm_borders(alpha = 0.5) +
+  tm_layout(main.title = "Distribution of Mechanised Pump Waterpoints rate (%) at LGA level",
+            main.title.position = "center",
+            main.title.size = 0.7,
+            legend.height = 0.2, 
+            legend.width = 0.35)
 
-tmap_arrange(wpt.nfunctional.map, wpt.npct.map,
-             asp=NA, ncol=2)
+tmap_arrange(percent_handpump, 
+             percent_mechanisedpump, 
+             asp=1, 
+             ncol=2)
 ```
 
-The code chunk below shows the spatial distribution of functional and non-functional waterpoint rate (%) at LGA level.
+**Observation**: It could be seen that the Northern region of Nigeria has a high proportion of handpump waterpoints while the Southern region of Nigeria has a high proportion of mechanised pump waterpoints.
+
+The code chunk below shows the spatial distribution of high usage and low usage waterpoints (%) at LGA level.
+
+```{r}
+percent_high <- tm_shape(nga_wp) +
+  tm_fill("pct_highusage",
+          n = 5,
+          style = "quantile") +
+  tm_borders(alpha = 0.5) +
+  tm_layout(main.title = "Distribution of High usage Waterpoints rate (%) at LGA level",
+            main.title.position = "center",
+            main.title.size = 0.7,
+            legend.height = 0.2, 
+            legend.width = 0.35)
+
+percent_low <- tm_shape(nga_wp) +
+  tm_fill("pct_lowusage",
+          n = 5,
+          style = "quantile") +
+  tm_borders(alpha = 0.5) +
+  tm_layout(main.title = "Distribution of Low usage Waterpoints rate (%) at LGA level",
+            main.title.position = "center",
+            main.title.size = 0.7,
+            legend.height = 0.2, 
+            legend.width = 0.35)
+
+tmap_arrange(percent_high, 
+             percent_low, 
+             asp=1, 
+             ncol=2)
+```
+
+**Observation**: It could be seen that the Northern and Eastern region of Nigeria has a high proportion of low usage waterpoints while the Southern region of Nigeria has a high proportion of high usage waterpoints.
 
 ## Correlation Analysis
 
@@ -441,7 +498,7 @@ corrplot.mixed(cluster_vars.cor,
 
 **Observation:**
 
-It could be seen from the correlation plot that pct\_`mechanised` and pct\_`highusage` are highly positively correlated. Also, pct\_`handpump` and pct\_`lowusage` are highly positively correlated.On the other hand, pct\_`mechanised` and pct\_`lowusage` are highly negatively correlated. `pct_lowusage` and `pct_highusage also have`high negative correlation. Hence we would drop variable `pct_lowusage for this exercise.`
+It could be seen from the correlation plot that ***pct_mechanised*** and ***pct_highusage*** are highly positively correlated. Also, ***pct_handpump*** and ***pct_lowusage*** are highly positively correlated. On the other hand, ***pct_mechanised*** and ***pct_lowusage*** are highly negatively correlated. ***pct_lowusage*** and ***pct_highusage*** also have high negative correlation. Hence we would drop variable pct_lowusage for this exercise.
 
 ## Conventional Hierarchical Clustering
 
@@ -456,16 +513,16 @@ cluster_vars <- nga_wp %>%
 head(cluster_vars,10)
 ```
 
-As previously mentioned, we have excluded variable pct_highusage and pct_lowusage because they are highly correlated with variable pct_handpump and pct_mechanised.
+As previously mentioned, we have excluded variable ***pct_lowusage*** because it is highly correlated with variable pct_handpump, pct_mechanised and pct_highusage.
 
-Next, we need to change the rows by township name instead of row number by using the code chunk below.
+Next, we need to change the rows by LGA name instead of row number by using the code chunk below.
 
 ```{r}
 row.names(cluster_vars) <- cluster_vars$"shapeName"
 head(cluster_vars,10)
 ```
 
-Notice that the row number has been replaced into the township name. Now, we will delete the shapeName field by using the code chunk below.
+Notice that the row number has been replaced into the LGA name. Now, we will delete the shapeName field by using the code chunk below.
 
 ```{r}
 nga_wp_1 <- select(cluster_vars, c(2:9))
@@ -476,7 +533,7 @@ head(nga_wp_1, 10)
 
 In order to avoid the cluster analysis result being biased to clustering variables with large values, it is useful to standardise the input variables before performing cluster analysis.
 
-In the code chunk below, *normalize()* of [*heatmaply*](https://cran.r-project.org/web/packages/heatmaply/) package is used to stadardisation the clustering variables by using Min-Max method. The *summary()* is then used to display the summary statistics of the standardised clustering variables.
+In the code chunk below, *normalize()* of [*heatmaply*](https://cran.r-project.org/web/packages/heatmaply/) package is used to standardization the clustering variables by using Min-Max method. The *summary()* is then used to display the summary statistics of the standardised clustering variables.
 
 ```{r}
 nga_wp_1.std <- normalize(nga_wp_1)
@@ -491,7 +548,6 @@ We will compute the proximity matrix by using [*dist()*](https://stat.ethz.ch/R-
 
 ```{r}
 proxmat <- dist(nga_wp_1, method = 'euclidean')
-proxmat
 ```
 
 ### Selecting the optimal clustering algorithm
@@ -536,7 +592,7 @@ fviz_gap_stat(gap_stat)
 
 With reference to the gap statistic graph above, the recommended number of cluster to retain is 1. However, it is not logical to retain only one cluster. By examine the gap statistic graph, the 5-cluster gives the largest gap statistic and should be the next best cluster to pick.
 
-### Interpreting the dendrograms
+### Plotting the dendrograms
 
 ```{r}
 hclust_ward <- hclust(proxmat, method = 'ward.D')
@@ -550,7 +606,7 @@ rect.hclust(hclust_ward,
 
 #### Transforming the data frame into a matrix
 
-The code chunk below will be used to transform *shan_ict* data frame into a data matrix to make the heatmap.
+The code chunk below will be used to transform *nga_wp_1* data frame into a data matrix to make the heatmap.
 
 ```{r}
 nga_wp_1_mat <- data.matrix(nga_wp_1)
@@ -574,8 +630,6 @@ heatmaply(normalize(nga_wp_1_mat),
           ylab = "LGAs of Nigeria"
           )
 ```
-
-### Multivariate Visualisation
 
 ### Mapping the clusters formed
 
@@ -613,7 +667,26 @@ qtm(nga_wp_cluster, "CLUSTER") + tm_layout(
   main.title.position = "center")
 ```
 
-**Observation**:
+**Observation**: It could be seen from the choropleth map that geographically-wise, the spatial distribution of the clusters is relatively fragmented with the exception of cluster 1. Most of the LGAs belong to cluster 1 are located at the NorthEastern and Southern region of Nigeria. The fragmented clusters make it very hard to implement large-scale regional efforts in terms of water point facilities as the LGAs have very different conditions with their nearby neighbors.
+
+### Multivariate Visualisation
+
+The code chunk below uses [`ggparcoord()`](https://ggobi.github.io/ggally/reference/ggparcoord.html) of [**GGally**](https://ggobi.github.io/ggally/) package to draw parallel coordinate plot and reveal clustering variables by cluster.
+
+```{r}
+ggparcoord(data = nga_wp_cluster, 
+           columns = c(11:17), 
+           scale = "globalminmax",
+           alphaLines = 0.2,
+           groupColumn = "CLUSTER",
+           boxplot = TRUE, 
+           title = "Multiple Parallel Coordinates Plots of Nigeria LGAs by Cluster") +
+  scale_color_viridis(discrete=TRUE) + 
+  facet_grid(~ CLUSTER) + 
+  theme(axis.text.x = element_text(angle = 90))
+```
+
+**Observation:** It could be seen from the
 
 ## Spatially Constrained Clustering using SKATER approach
 
@@ -627,7 +700,7 @@ nga_sp <- as_Spatial(nga_wp)
 
 ### Computing Neighbour List
 
-Next, *st_centroid()* function is used to retrieve the polygon centroid and *sknn2nb()* function will be used to compute the neighbours list using k-nearest neighbors from polygon list.
+Next, *st_centroid()* function is used to retrieve the polygon centroid and *knn2nb()* function will be used to compute the neighbours list using k-nearest neighbors from polygon list.
 
 ```{r}
 coords <- st_centroid(st_geometry(nga_wp))
@@ -635,7 +708,7 @@ knn <- knn2nb(knearneigh(coords, k = 8))
 summary(knn)
 ```
 
-We can plot the neighbours list on shan_sp by using the code chunk below.
+We can plot the neighbours list on nga_sp by using the code chunk below.
 
 ```{r}
 plot(nga_sp, 
@@ -757,31 +830,45 @@ For easy comparison, it will be better to place both the hierarchical clustering
 ```{r}
 hclust.map <- qtm(nga_wp_cluster,
                   "CLUSTER") + 
-  tm_borders(alpha = 0.5) 
+  tm_borders(alpha = 0.5) + 
+  tm_layout(main.title = "Regionalisation of Nigeria using hierarchical clustering",
+            main.title.position = "center",
+            main.title.size = 0.7,
+            legend.height = 0.2, 
+            legend.width = 0.35)
 
 shclust.map <- qtm(nga_sf_spatialcluster,
                    "SP_CLUSTER") + 
-  tm_borders(alpha = 0.5) 
+  tm_borders(alpha = 0.5) + 
+  tm_layout(main.title = "Regionalisation of Nigeria using spatially constrained clustering",
+            main.title.position = "center",
+            main.title.size = 0.7,
+            legend.height = 0.2, 
+            legend.width = 0.35)
 
 tmap_arrange(hclust.map, shclust.map,
              asp=NA, ncol=2)
 ```
 
-**Observation:**
+**Observation:** It could be seen from the choropleth map that as compared to hierarchical clustering, the clusters formed under spatially constrained clustering method are more closely located and concentrated. As such, regional infrastructure improvement towards water points according to spatially constrained clustering would be more easier to implement and probably more effective as LGAs would have similar conditions with their nearby neighbors. Hence, large-scale facilities could be shared among these LGAs as they are in geographical proximity.
 
 ## Visual Interpretation of Clusters
 
 ### Multivariate Visualisation
 
-Past studies shown that parallel coordinate plot can be used to reveal clustering variables by cluster very effectively. In the code chunk below, [`ggparcoord()`](https://ggobi.github.io/ggally/reference/ggparcoord.html) of [**GGally**](https://ggobi.github.io/ggally/) package
+The code chunk below uses [`ggparcoord()`](https://ggobi.github.io/ggally/reference/ggparcoord.html) of [**GGally**](https://ggobi.github.io/ggally/) package to draw parallel coordinate plot and reveal clustering variables by cluster.
 
-    ggparcoord(data = shan_sf_ngeo_cluster, 
-               columns = c(17:21), 
-               scale = "globalminmax",
-               alphaLines = 0.2,
-               boxplot = TRUE, 
-               title = "Multiple Parallel Coordinates Plots of ICT Variables by Cluster") +
-      facet_grid(~ CLUSTER) + 
-      theme(axis.text.x = element_text(angle = 30))
+```{r}
+ggparcoord(data = nga_sf_spatialcluster, 
+           columns = c(11:17), 
+           scale = "globalminmax",
+           alphaLines = 0.2,
+           groupColumn = "SP_CLUSTER",
+           boxplot = TRUE, 
+           title = "Multiple Parallel Coordinates Plots of Nigeria LGAs by Cluster") +
+  scale_color_viridis(discrete=TRUE) + 
+  facet_grid(~ SP_CLUSTER) + 
+  theme(axis.text.x = element_text(angle = 90))
+```
 
-## Conclusion
+**Observation:**
